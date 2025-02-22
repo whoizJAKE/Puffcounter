@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puff Counter</title>
+    <style>
+         /* CSS de marde ici, shit qui ma fait le plus chier tbh */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            text-align: center;
+            background-color: #4158D0;
+            background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            font-family: Arial, sans-serif;
+            color: #00ffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+/*pas touchez container DOIT RESTER 40PX sinon shit don't load on phones/ipad */ 
+        h1 {
+            font-size: 28px;
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            margin-top: 0;
+        }
+
+        #puffCount {
+            font-size: 56px;
+            margin: 30px 0;
+            color: #ff00ff;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+        }
+
+        select, input {
+            padding: 8px 15px;
+            margin: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button :hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        #newUserBox {
+            display: none;
+            margin: 10px 0;
+        }
+
+        .smoke {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: smoke 2s forwards;
+        }
+/*am i even trying ? awwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwhhhhhhhhhhhhhhhhhhhh*/ 
+/*trouver le fucker, cap à 2 sec, sucks mais sa work, sans ça shit don't work*/
+        @keyframes smoke {
+            0% {
+                opacity: 0.8;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(2);
+            }
+        }
+        /*goood fucking lord, tuez moi (took me fucking +ou- 2hours ce css de marde) */
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Puff Counter</h1>
+        <select id="users" onchange="switchUser()"></select>
+        <div id="newUserBox">
+            <input id="newUserName" placeholder="Enter Name">
+            <button onclick="addUser()">Add</button>
+        </div>
+        <div id="puffCount">0</div>
+        <button id="puffButton" onclick="puff()">Take a Puff</button>
+        <button onclick="reset()">Reset</button>
+    </div>
+
+    <script>
+        let counts = JSON.parse(localStorage.getItem('puffCounts'));
+        if (!counts) {
+            counts = { MAMADOU: 0, BC: 0 };
+            localStorage.setItem('puffCounts', JSON.stringify(counts));
+        }
+//thankss OpenAi pour ce scrypt la couldnt do it without u
+        let usersSelect = document.getElementById('users');
+        for (let u in counts) {
+            let option = new Option(u, u);
+            usersSelect.appendChild(option);
+        }
+        let newOption = new Option('Add User', 'new');
+        usersSelect.appendChild(newOption);
+
+        // supposer garder le local data du user using it mais bon.. 
+        let user = localStorage.getItem('currentUser');
+        if (user && counts[user] !== undefined) {
+            usersSelect.value = user;
+        } else {
+            user = Object.keys(counts)[0];
+            usersSelect.value = user;
+        }
+        document.getElementById('puffCount').textContent = counts[user];
+
+        function switchUser() {
+            let dropdown = document.getElementById('users');
+            let newUserBox = document.getElementById('newUserBox');
+            
+            if (dropdown.value === 'new') {
+                newUserBox.style.display = 'block';
+            } else {
+                newUserBox.style.display = 'none';
+                user = dropdown.value;
+                document.getElementById('puffCount').textContent = counts[user] || 0;
+                localStorage.setItem('currentUser', user);
+            }
+        }
+
+        function addUser() {
+            let newUserName = document.getElementById('newUserName');
+            let name = newUserName.value.trim();
+            
+            if (name) {
+                counts[name] = 0;
+                localStorage.setItem('puffCounts', JSON.stringify(counts));
+
+                // new option de select, this crap should fucking work finally
+                let option = new Option(name, name);
+                let lastOption = usersSelect.lastElementChild;
+                if (lastOption.value === 'new') {
+                    usersSelect.insertBefore(option, lastOption);
+                } else {
+                    for (let i = 0; i < usersSelect.children.length; i++) {
+                        if (usersSelect.children[i].value === 'new') {
+                            usersSelect.insertBefore(option, usersSelect.children[i]);
+                            break;
+                        }
+                    }
+                }
+
+                // Selectioner le wwantrd user ??
+                usersSelect.value = name;
+                user = name;
+                localStorage.setItem('currentUser', user);
+                document.getElementById('puffCount').textContent = 0;
+                newUserName.value = '';
+                newUserBox.style.display = 'none';
+            }
+        }
+
+        function createSmoke(x, y) {
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke';
+            smoke.style.left = `${x}px`;
+            smoke.style.top = `${y}px`;
+            document.body.appendChild(smoke);
+            setTimeout(() => smoke.remove(), 2000);
+        }
+
+        function puff() {
+            counts[user] = (counts[user] || 0) + 1;
+            document.getElementById('puffCount').textContent = counts[user];
+            localStorage.setItem('puffCounts', JSON.stringify(counts));
+
+            const btn = document.getElementById('puffButton');
+            const rect = btn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2 - 7.5;
+            const centerY = rect.top + rect.height / 2 - 7.5;
+
+            // crée des particxules de smoke pull du css *only fucking thing i understood de ce JS bulshit la
+            for (let i = 0; i < 3; i++) {
+                const offsetX = centerX + (Math.random() - 0.5) * 20;
+                const offsetY = centerY + (Math.random() - 0.5) * 20;
+                createSmoke(offsetX, offsetY);
+            }
+        }
+
+        function reset() {
+            if (confirm('Reset puff count?')) {
+                counts[user] = 0;
+                document.getElementById('puffCount').textContent = 0;
+                localStorage.setItem('puffCounts', JSON.stringify(counts));
+            }
+        }
+    </script>
+</body>
+</html>
