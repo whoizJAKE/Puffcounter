@@ -89,3 +89,90 @@
         }
         /*goood fucking lord, tuez moi (took me fucking +ou- 2hours ce css de marde) */
     </style>
+<style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      text-align: center;
+      background-color: #000000;
+      background-image: linear-gradient(43deg, #000000 0%, #333333 46%, #666666 100%);
+      font-family: Arial, sans-serif;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      backdrop-filter: blur(5px);
+    }
+    h1 {
+      font-size: 28px;
+      color: #ff0000;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+      margin-top: 0;
+    }
+    #cigCount {
+      font-size: 56px;
+      margin: 30px 0;
+      color: #ff0000;
+      text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+    select, input {
+      padding: 8px 15px;
+      margin: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: rgba(255, 0, 0, 0.1);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    }
+    #newUserBox {
+      display: none;
+      margin: 10px 0;
+    }
+    .smoke {
+      position: fixed;
+      width: 15px;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: smoke 2s forwards;
+    }
+    @keyframes smoke {
+      0% { opacity: 0.8; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-100px) scale(2); }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Puff Counter - Cigarettes</h1>
+    <select id="users" onchange="switchUser()"></select>
+    <div id="newUserBox">
+      <input id="newUserName" placeholder="Enter Name" />
+      <button onclick="addUser()">Add</button>
+    </div>
+    <div id="cigCount">0</div>
+    <button id="cigButton" onclick="smokeCig()">Smoke a Cigarette</button>
+    <button onclick="reset()">Reset</button>
+  </div>
+/*cigg fini caliss
