@@ -8,3 +8,7 @@ V1.01
   
   2025-04-11
 Soon, i'll add some more feature like a ciggarettes counter and some more percs and animations. Déjà push some stuff, more to come in the next couples of weeks/months.
+
+v1.02
+ 2025-04-23
+ I just added the ciggarettes function too the site. Je viens juste de finir d'ajouter le compteur de ciggarrettes après 2 bonne semaines de work on it... 
