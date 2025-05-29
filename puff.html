@@ -128,6 +128,26 @@
       border-radius: 5px;
       font-size: 14px;
     }
+    .cost-tracker {
+      background: rgba(255, 0, 0, 0.1);
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      font-size: 16px;
+      color: #ff4444;
+    }
+    .cost-details {
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: left;
+      padding-left: 20px;
+    }
+    .usage-type-selector {
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -152,7 +172,27 @@
       <input id="newUserName" placeholder="Enter Name" />
       <button onclick="addUser()">Add</button>
     </div>
+
+    <div class="usage-type-selector">
+      <label>Usage Type:</label>
+      <select id="usageType" onchange="updateCounts()">
+        <option value="puff">Bong/Pipe Puff</option>
+        <option value="joint">Joint</option>
+      </select>
+    </div>
+
     <div id="puffCount">0</div>
+    
+    <div class="cost-tracker">
+      <div>Estimated Money Spent: $<span id="moneySpent">0.00</span></div>
+      <div class="cost-details">
+        Based on average Canadian prices:
+        <br>- $20 per 3.5g
+        <br>- Joint ≈ 0.32g ($1.83 each)
+        <br>- Bong/Pipe puff ≈ 0.1g ($0.57 each)
+      </div>
+    </div>
+
     <div class="health-impact">
       Frequent cannabis use may lead to:
       <br>- Impaired memory and concentration
@@ -177,6 +217,11 @@
     let counts = {};
     let user = null;
     let localStorageAvailable = isLocalStorageAvailable();
+
+    // Constants for cost calculations
+    const COST_PER_GRAM = 5.71; // $20/3.5g
+    const GRAMS_PER_JOINT = 0.32;
+    const GRAMS_PER_PUFF = 0.1;
 
     if (localStorageAvailable) {
       const storedCounts = localStorage.getItem('puffCounts');
@@ -289,12 +334,34 @@
     }
 
     function updateCounts() {
-      document.getElementById('puffCount').textContent = user ? counts[user] : 0;
-      const puffs = user ? counts[user] : 0;
+      const usageCount = user ? counts[user] : 0;
+      document.getElementById('puffCount').textContent = usageCount;
+      
+      // Calculate cost based on usage type
+      const usageType = document.getElementById('usageType').value;
+      let totalCost;
+      
+      if (usageType === 'joint') {
+        totalCost = usageCount * (GRAMS_PER_JOINT * COST_PER_GRAM);
+      } else { // puff
+        totalCost = usageCount * (GRAMS_PER_PUFF * COST_PER_GRAM);
+      }
+      
+      document.getElementById('moneySpent').textContent = totalCost.toFixed(2);
       
       // Update warning message based on usage
-      if (puffs > 50) {
-        document.querySelector('.warning-text').innerHTML += '<br><strong>Your usage is high. Consider speaking with a counselor.</strong>';
+      const warningText = document.querySelector('.warning-text');
+      warningText.innerHTML = `This tool is designed to help you track and reduce your cannabis consumption.
+        Regular cannabis use can affect memory, learning, and mental health.`;
+      
+      if (usageCount > 50) {
+        warningText.innerHTML += '<br><strong>Your usage is high. Consider speaking with a counselor.</strong>';
+      }
+      
+      // Add financial impact warning
+      if (totalCost > 100) {
+        warningText.innerHTML += `<br><strong>You've spent over $${totalCost.toFixed(2)} on cannabis. 
+          Consider the financial impact of your usage.</strong>`;
       }
     }
   </script>
