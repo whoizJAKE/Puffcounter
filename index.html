@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Puff Counter</title>
+  <title>PuffCounter - Track & Quit</title>
   <style>
-     /* CSS de marde ici, shit qui ma fait le plus chier tbh */
     body {
       margin: 0;
       min-height: 100vh;
@@ -23,6 +22,7 @@
       padding: 40px;
       border-radius: 15px;
       backdrop-filter: blur(5px);
+      max-width: 600px;
     }
     h1 {
       font-size: 28px;
@@ -49,14 +49,90 @@
       background: rgba(0, 255, 255, 0.1);
       box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
     }
+    #ageVerification {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .age-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 500px;
+      color: #ffffff;
+    }
+    .age-box h2 {
+      color: #ff0000;
+      margin-bottom: 20px;
+    }
+    .age-box p {
+      margin-bottom: 20px;
+      line-height: 1.5;
+      color: #ffffff;
+    }
+    .warning-text {
+      color: #ff4444;
+      font-size: 16px;
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(255, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+    .help-resources {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
-  <div id="container">
-    <h1>Welcome to PuffCounter - Bienvenue chez PuffCounter</h1>
-    <p>Choose your tracking option - Choisis ce que tu aimerai compter</p>
-    <button onclick="location.href='puff.html'">Weed Puffs</button>
-    <button onclick="location.href='cig.html'">Cigarettes</button>
+  <div id="ageVerification">
+    <div class="age-box">
+      <h2>Age Verification Required</h2>
+      <p>Warning: This website is intended for individuals who are trying to track and reduce substance use. It contains information about tobacco and cannabis use.</p>
+      <p>You must be 18 years or older to access this site.</p>
+      <button onclick="verifyAge(true)">I am 18 or older</button>
+      <button onclick="verifyAge(false)">I am under 18</button>
+    </div>
   </div>
+
+  <div id="container" style="display: none;">
+    <h1>PuffCounter - Track & Reduce Usage</h1>
+    <div class="warning-text">
+      This tool is designed to help you track and ultimately reduce your substance use. 
+      Remember: Both smoking and cannabis use can have serious health implications.
+    </div>
+    <p>Choose your tracking option:</p>
+    <button onclick="location.href='puff.html'">Cannabis Tracker</button>
+    <button onclick="location.href='cig.html'">Cigarette Tracker</button>
+    
+    <div class="help-resources">
+      <h3>Need Help?</h3>
+      <p>Tobacco Cessation: 1-800-QUIT-NOW (1-800-784-8669)</p>
+      <p>Substance Use Helpline: 1-800-662-HELP (1-800-662-4357)</p>
+      <p>Both lines are free, confidential, and available 24/7</p>
+    </div>
+  </div>
+
+  <script>
+    function verifyAge(isAdult) {
+      if (!isAdult) {
+        window.location.href = 'https://www.samhsa.gov/find-help/national-helpline';
+        return;
+      }
+      document.getElementById('ageVerification').style.display = 'none';
+      document.getElementById('container').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
