@@ -139,6 +139,7 @@
     <h1>Puff Counter - Track & Quit</h1>
     <div class="warning-text">
       Every cigarette reduces your life expectancy by approximately 11 minutes. Track your usage to help quit.
+      In Canada, smoking is responsible for about 48,000 deaths each year.
     </div>
     <select id="users" onchange="switchUser()"></select>
     <div id="newUserBox">
@@ -148,14 +149,18 @@
     <div id="cigCount">0</div>
     <div class="health-impact">
       Money spent on cigarettes: $<span id="moneySpent">0</span><br>
-      (Based on average cost of $10 per pack)
+      (Based on average cost of $15 per pack in Canada)
     </div>
     <button id="cigButton" onclick="smokeCig()">Log a Cigarette</button>
     <button onclick="reset()">Reset</button>
     
     <div class="quit-resources">
       <h3>Need Help Quitting?</h3>
-      <p>Call 1-800-QUIT-NOW (1-800-784-8669) for free support</p>
+      <p>Smokers' Helpline: 1-866-366-3667</p>
+      <p>QuitNow (BC): 1-877-455-2233</p>
+      <p>ConnexOntario: 1-866-531-2600</p>
+      <p>Free support available in English & French</p>
+      <p><small>Visit <a href="https://www.canada.ca/en/health-canada/services/smoking-tobacco/quit-smoking.html" style="color: #ffffff;">Health Canada</a> for more resources</small></p>
     </div>
   </div>
 
@@ -267,7 +272,7 @@
 
     function verifyAge(isAdult) {
       if (!isAdult) {
-        window.location.href = 'https://www.cdc.gov/tobacco/basic_information/youth/index.htm';
+        window.location.href = 'https://www.canada.ca/en/health-canada/services/smoking-tobacco/quit-smoking.html';
         return;
       }
       document.getElementById('ageVerification').style.display = 'none';
@@ -276,9 +281,9 @@
 
     function updateCounts() {
       document.getElementById('cigCount').textContent = user ? counts[user] : 0;
-      // Calculate money spent (assuming 20 cigarettes per pack at $10 per pack)
+      // Calculate money spent (assuming 25 cigarettes per pack at $15 per pack in Canada)
       const cigarettes = user ? counts[user] : 0;
-      const moneySpent = ((cigarettes / 20) * 10).toFixed(2);
+      const moneySpent = ((cigarettes / 25) * 15).toFixed(2);
       document.getElementById('moneySpent').textContent = moneySpent;
     }
   </script>
