@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Puff Counter - Cigarettes</title>
+  <title>Puff Counter - Track & Quit Smoking</title>
   <style>
     body {
       margin: 0;
@@ -28,6 +28,19 @@
       color: #ff0000;
       text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
       margin-top: 0;
+    }
+    .warning-text {
+      color: #ff4444;
+      font-size: 14px;
+      margin: 10px 0;
+      max-width: 400px;
+    }
+    .health-impact {
+      background: rgba(255, 0, 0, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      font-size: 14px;
     }
     #cigCount {
       font-size: 56px;
@@ -76,19 +89,74 @@
       0% { opacity: 0.8; transform: translateY(0) scale(1); }
       100% { opacity: 0; transform: translateY(-100px) scale(2); }
     }
+    #ageVerification {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .age-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 500px;
+    }
+    .age-box h2 {
+      color: #ff0000;
+      margin-bottom: 20px;
+    }
+    .age-box p {
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .quit-resources {
+      margin-top: 20px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
-  <div id="container">
-    <h1>Puff Counter - Cigarettes</h1>
+  <div id="ageVerification">
+    <div class="age-box">
+      <h2>Age Verification Required</h2>
+      <p>Warning: This website is intended for individuals who are trying to track and quit smoking. It contains information about tobacco and substance use.</p>
+      <p>You must be 18 years or older to access this site.</p>
+      <button onclick="verifyAge(true)">I am 18 or older</button>
+      <button onclick="verifyAge(false)">I am under 18</button>
+    </div>
+  </div>
+
+  <div id="container" style="display: none;">
+    <h1>Puff Counter - Track & Quit</h1>
+    <div class="warning-text">
+      Every cigarette reduces your life expectancy by approximately 11 minutes. Track your usage to help quit.
+    </div>
     <select id="users" onchange="switchUser()"></select>
     <div id="newUserBox">
       <input id="newUserName" placeholder="Enter Name" />
       <button onclick="addUser()">Add</button>
     </div>
     <div id="cigCount">0</div>
-    <button id="cigButton" onclick="smokeCig()">Smoke a Cigarette</button>
+    <div class="health-impact">
+      Money spent on cigarettes: $<span id="moneySpent">0</span><br>
+      (Based on average cost of $10 per pack)
+    </div>
+    <button id="cigButton" onclick="smokeCig()">Log a Cigarette</button>
     <button onclick="reset()">Reset</button>
+    
+    <div class="quit-resources">
+      <h3>Need Help Quitting?</h3>
+      <p>Call 1-800-QUIT-NOW (1-800-784-8669) for free support</p>
+    </div>
   </div>
 
   <script>
@@ -197,8 +265,21 @@
       }
     }
 
+    function verifyAge(isAdult) {
+      if (!isAdult) {
+        window.location.href = 'https://www.cdc.gov/tobacco/basic_information/youth/index.htm';
+        return;
+      }
+      document.getElementById('ageVerification').style.display = 'none';
+      document.getElementById('container').style.display = 'block';
+    }
+
     function updateCounts() {
       document.getElementById('cigCount').textContent = user ? counts[user] : 0;
+      // Calculate money spent (assuming 20 cigarettes per pack at $10 per pack)
+      const cigarettes = user ? counts[user] : 0;
+      const moneySpent = ((cigarettes / 20) * 10).toFixed(2);
+      document.getElementById('moneySpent').textContent = moneySpent;
     }
   </script>
 </body>
