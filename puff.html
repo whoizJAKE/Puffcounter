@@ -158,14 +158,18 @@
       <br>- Impaired memory and concentration
       <br>- Reduced motivation
       <br>- Increased risk of anxiety and depression
+      <br>- Potential legal implications (visit <a href="https://www.canada.ca/en/services/health/campaigns/cannabis/health-effects.html" style="color: #ff4444;">Health Canada</a> to learn more)
     </div>
     <button id="puffButton" onclick="puff()">Log Usage</button>
     <button onclick="reset()">Reset</button>
 
     <div class="help-resources">
-      <h3>Need Help?</h3>
-      <p>Substance Use Helpline: 1-800-662-HELP (1-800-662-4357)</p>
-      <p>Free, confidential help available 24/7</p>
+      <h3>Need Help? Canadian Resources Available:</h3>
+      <p>Drug & Alcohol Helpline: 1-800-565-8603</p>
+      <p>ConnexOntario: 1-866-531-2600 (24/7 addiction services)</p>
+      <p>Cannabis Consultation: 1-833-CANNABIS (1-833-226-6227)</p>
+      <p>Free, confidential help available in English & French</p>
+      <p><small>Visit <a href="https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/health-effects/addiction.html" style="color: #00ffff;">Health Canada</a> for more resources</small></p>
     </div>
   </div>
 
@@ -200,7 +204,7 @@
 
     function verifyAge(isAdult) {
       if (!isAdult) {
-        window.location.href = 'https://www.samhsa.gov/find-help/national-helpline';
+        window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
         return;
       }
       document.getElementById('ageVerification').style.display = 'none';
