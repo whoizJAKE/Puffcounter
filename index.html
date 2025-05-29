@@ -117,17 +117,19 @@
     <button onclick="location.href='cig.html'">Cigarette Tracker</button>
     
     <div class="help-resources">
-      <h3>Need Help?</h3>
-      <p>Tobacco Cessation: 1-800-QUIT-NOW (1-800-784-8669)</p>
-      <p>Substance Use Helpline: 1-800-662-HELP (1-800-662-4357)</p>
-      <p>Both lines are free, confidential, and available 24/7</p>
+      <h3>Need Help? Canadian Resources Available:</h3>
+      <p>Quit Smoking: 1-866-366-3667 (Smokers' Helpline)</p>
+      <p>Drug & Alcohol Helpline: 1-800-565-8603</p>
+      <p>ConnexOntario: 1-866-531-2600 (24/7 addiction services)</p>
+      <p>All helplines are free, confidential, and available in English & French</p>
+      <p><small>Visit <a href="https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html" style="color: #00ffff;">Health Canada</a> for more resources</small></p>
     </div>
   </div>
 
   <script>
     function verifyAge(isAdult) {
       if (!isAdult) {
-        window.location.href = 'https://www.samhsa.gov/find-help/national-helpline';
+        window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
         return;
       }
       document.getElementById('ageVerification').style.display = 'none';
