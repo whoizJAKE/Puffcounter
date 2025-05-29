@@ -1,31 +1,22 @@
 <script>
-    // Grab the type from the URL (?type=cigarette or ?type=marijuana)
-    const urlParams = new URLSearchParams(window.location.search);
-    const type = urlParams.get('type');
-
-    // Set the title and button text based on what they clicked
-    if (type === 'cigarette') {
-      document.querySelector('h1').textContent = 'Cigarette Puff Counter';
-      document.getElementById('puffButton').textContent = 'Take a Puff';
-    } else if (type === 'marijuana') {
-      document.querySelector('h1').textContent = 'Marijuana Puff Counter';
-      document.getElementById('puffButton').textContent = 'Take a Hit';
-    } else {
-      // Fallback if something’s fucked up in the URL
-      document.querySelector('h1').textContent = 'Puff Counter';
-      document.getElementById('puffButton').textContent = 'Take a Puff';
-    }
-
-    // Load puff counts from local storage
+    // Get puffCounts from local storage or creer sum from the new user input profiles.
     let counts = JSON.parse(localStorage.getItem('puffCounts'));
     if (!counts) {
       counts = {};
       localStorage.setItem('puffCounts', JSON.stringify(counts));
+    } else {
+      // Enlever bc/MAMAdou des profiles on the landing page.
+      if (counts.hasOwnProperty("MAMADOU")) {
+        delete counts["MAMADOU"];
+      }
+      if (counts.hasOwnProperty("BC")) {
+        delete counts["BC"];
+      }
+      localStorage.setItem('puffCounts', JSON.stringify(counts));
     }
-    /* Removed the MAMADOU/BC deletion part, seemed like your test shit */
 
     let usersSelect = document.getElementById('users');
-    // Populate the dropdown with users
+    // Re-rentrer les users from LocalStorage (si y'en a lol)
     for (let u in counts) {
       let option = new Option(u, u);
       usersSelect.appendChild(option);
@@ -33,9 +24,9 @@
     let newOption = new Option('Add User', 'new');
     usersSelect.appendChild(newOption);
 
-    // Get the current user
+    // get les local users si valid et create new output value
     let user = localStorage.getItem('currentUser');
-    if (user && counts[user]) {
+    if (user && counts[user] !== undefined) {
       usersSelect.value = user;
     } else if (Object.keys(counts).length > 0) {
       user = Object.keys(counts)[0];
@@ -44,11 +35,9 @@
       user = null;
       usersSelect.value = 'new';
     }
-    // Show the count for this user and type (0 if undefined)
-    const currentCount = user && counts[user] && counts[user][type] !== undefined ? counts[user][type] : 0;
-    document.getElementById('puffCount').textContent = currentCount;
+    document.getElementById('puffCount').textContent = user ? counts[user] : 0;
 
-    // Show the "Add User" box if selected
+    // si le dropdown est setup to "Add User", display the new user input dans box next loading time .
     if (usersSelect.value === 'new') {
       document.getElementById('newUserBox').style.display = 'block';
     }
@@ -62,9 +51,7 @@
       } else {
         newUserBox.style.display = 'none';
         user = dropdown.value;
-        const userCounts = counts[user] || {};
-        const count = userCounts[type] || 0;
-        document.getElementById('puffCount').textContent = count;
+        document.getElementById('puffCount').textContent = counts[user] || 0;
         localStorage.setItem('currentUser', user);
       }
     }
@@ -74,12 +61,10 @@
       let name = newUserName.value.trim();
 
       if (name) {
-        if (!counts[name]) {
-          counts[name] = {}; // New user gets an empty object
-        }
+        counts[name] = 0;
         localStorage.setItem('puffCounts', JSON.stringify(counts));
 
-        // Add to dropdown
+        // add new option dans le insert box qd set "Add User"
         let option = new Option(name, name);
         let lastOption = usersSelect.lastElementChild;
         if (lastOption.value === 'new') {
@@ -93,7 +78,7 @@
           }
         }
 
-        // Set as current user
+        // add le new user et le setup comme current user
         usersSelect.value = name;
         user = name;
         localStorage.setItem('currentUser', user);
@@ -113,22 +98,21 @@
     }
 
     function puff() {
+      // Si aucun user selectionner, ask le user dans creer un
       if (!user) {
         alert('Please add a user first.');
         return;
       }
-      if (!counts[user]) {
-        counts[user] = {};
-      }
-      counts[user][type] = (counts[user][type] || 0) + 1;
-      document.getElementById('puffCount').textContent = counts[user][type];
+      counts[user] = (counts[user] || 0) + 1;
+      document.getElementById('puffCount').textContent = counts[user];
       localStorage.setItem('puffCounts', JSON.stringify(counts));
 
-      // Your dope smoke effect
       const btn = document.getElementById('puffButton');
       const rect = btn.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2 - 7.5;
       const centerY = rect.top + rect.height / 2 - 7.5;
+
+      // smoke du css const ici
       for (let i = 0; i < 3; i++) {
         const offsetX = centerX + (Math.random() - 0.5) * 20;
         const offsetY = centerY + (Math.random() - 0.5) * 20;
@@ -139,10 +123,7 @@
     function reset() {
       if (confirm('Reset puff count?')) {
         if (!user) return;
-        if (!counts[user]) {
-          counts[user] = {};
-        }
-        counts[user][type] = 0;
+        counts[user] = 0;
         document.getElementById('puffCount').textContent = 0;
         localStorage.setItem('puffCounts', JSON.stringify(counts));
       }
