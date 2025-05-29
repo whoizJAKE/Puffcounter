@@ -12,3 +12,7 @@ Soon, i'll add some more feature like a ciggarettes counter and some more percs 
 v1.02
  2025-04-23
  I just added the ciggarettes function too the site. Je viens juste de finir d'ajouter le compteur de ciggarrettes après 2 bonne semaines de work on it... 
+
+ V2.0
+ 2025-05-29
+ I just branded the site too it's original usefulness, an Anti-smoking website. I added a cost counter for the ciggs/weed based on the average cost of ciggs and weed across Canada. 
