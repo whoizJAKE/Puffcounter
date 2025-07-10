@@ -9,8 +9,11 @@
       margin: 0;
       min-height: 100vh;
       text-align: center;
-      background-color: #4158d0;
-      background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+      --color1: #1c1c1c;
+      --color2: #2c3e50;
+      --color3: #34495e;
+      background-image: linear-gradient(43deg, var(--color1) 0%, var(--color2) 50%, var(--color3) 100%);
+      animation: colorChange 30s infinite;
       font-family: Arial, sans-serif;
       color: #00ffff;
       display: flex;
@@ -93,6 +96,23 @@
       border-radius: 5px;
       font-size: 14px;
     }
+    @keyframes colorChange {
+      0% {
+        --color1: #1c1c1c;
+        --color2: #2c3e50;
+        --color3: #34495e;
+      }
+      50% {
+        --color1: #34495e;
+        --color2: #1c1c1c;
+        --color3: #2c3e50;
+      }
+      100% {
+        --color1: #1c1c1c;
+        --color2: #2c3e50;
+        --color3: #34495e;
+      }
+    }
   </style>
 </head>
 <body>
@@ -119,7 +139,7 @@
     <div class="help-resources">
       <h3>Need Help? Canadian Resources Available:</h3>
       <p>Quit Smoking: 1-866-366-3667 (Smokers' Helpline)</p>
-      <p>Drug & Alcohol Helpline: 1-800-565-8603</p>
+      <p>Drug & Alcohol Alcohol Helpline: 1-800-565-8603</p>
       <p>ConnexOntario: 1-866-531-2600 (24/7 addiction services)</p>
       <p>All helplines are free, confidential, and available in English & French</p>
       <p><small>Visit <a href="https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html" style="color: #00ffff;">Health Canada</a> for more resources</small></p>
