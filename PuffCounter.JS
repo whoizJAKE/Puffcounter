@@ -1,5 +1,5 @@
 <script>
-    // Get puffCounts from local storage or creer sum from the new user input profiles.
+    // Get puffCounts from local storage or creer sum from the new user input profiles.(toutes les historiques sont store locally dans le fond)
     let counts = JSON.parse(localStorage.getItem('puffCounts'));
     if (!counts) {
       counts = {};
