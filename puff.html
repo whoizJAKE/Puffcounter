@@ -1,370 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="MyamnarCIGGARETTEhasbullah.jpeg"/>
-  <title>PuffCounter - Cannabis Usage Tracker</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      text-align: center;
-      background-color: #4158d0;
-      background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
-      font-family: Arial, sans-serif;
-      color: #00ffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #container {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 40px;
-      border-radius: 15px;
-      backdrop-filter: blur(5px);
-    }
-    h1 {
-      font-size: 28px;
-      color: #00ff00;
-      text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-      margin-top: 0;
-    }
-    #puffCount {
-      font-size: 56px;
-      margin: 30px 0;
-      color: #ff00ff;
-      text-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
-    }
-    select, input {
-      padding: 8px 15px;
-      margin: 5px;
-      background: rgba(0, 0, 0, 0.2);
-      color: #00ffff;
-      border: 1px solid #00ffff;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      background: rgba(0, 0, 0, 0.2);
-      color: #00ffff;
-      border: 2px solid #00ffff;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    button:hover {
-      background: rgba(0, 255, 255, 0.1);
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-    }
-    #newUserBox {
-      display: none;
-      margin: 10px 0;
-    }
-    .smoke {
-      position: fixed;
-      width: 15px;
-      height: 15px;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 50%;
-      pointer-events: none;
-      animation: smoke 2s forwards;
-    }
-    @keyframes smoke {
-      0% { opacity: 0.8; transform: translateY(0) scale(1); }
-      100% { opacity: 0; transform: translateY(-100px) scale(2); }
-    }
-    #ageVerification {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .age-box {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      max-width: 500px;
-      color: #ffffff;
-    }
-    .age-box h2 {
-      color: #ff0000;
-      margin-bottom: 20px;
-    }
-    .age-box p {
-      margin-bottom: 20px;
-      line-height: 1.5;
-      color: #ffffff;
-    }
-    .warning-text {
-      color: #ff4444;
-      font-size: 16px;
-      margin: 20px 0;
-      padding: 15px;
-      background: rgba(255, 0, 0, 0.1);
-      border-radius: 5px;
-    }
-    .health-impact {
-      background: rgba(255, 0, 0, 0.1);
-      padding: 10px;
-      border-radius: 5px;
-      margin: 10px 0;
-      font-size: 14px;
-      color: #ff4444;
-    }
-    .help-resources {
-      margin-top: 20px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    .cost-tracker {
-      background: rgba(255, 0, 0, 0.1);
-      padding: 15px;
-      border-radius: 5px;
-      margin: 15px 0;
-      font-size: 16px;
-      color: #ff4444;
-    }
-    .cost-details {
-      font-size: 14px;
-      margin-top: 10px;
-      text-align: left;
-      padding-left: 20px;
-    }
-    .usage-type-selector {
-      margin: 15px 0;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PuffCounter - Cannabis Usage Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            text-align: center;
+            background-color: #4158d0;
+            background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+            font-family: Arial, sans-serif;
+            color: #00ffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 { font-size: 28px; color: #00ff00; text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); margin-top: 0; }
+        #puffCount { font-size: 56px; margin: 30px 0; color: #ff00ff; text-shadow: 0 0 15px rgba(255, 0, 255, 0.5); }
+        select, input {
+            padding: 8px 12px; margin: 5px;
+            background: rgba(0, 0, 0, 0.2); color: #00ffff;
+            border: 1px solid #00ffff; border-radius: 5px; font-size: 14px;
+        }
+        select { max-width: 100%; }
+        button {
+            padding: 10px 20px; margin: 5px;
+            background: rgba(0, 0, 0, 0.2); color: #00ffff;
+            border: 2px solid #00ffff; border-radius: 5px;
+            font-size: 16px; cursor: pointer; transition: all 0.3s ease;
+        }
+        button:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); }
+        #newUserBox { display: none; margin: 10px 0; }
+        .smoke {
+            position: fixed; width: 15px; height: 15px;
+            background: rgba(255, 255, 255, 0.8); border-radius: 50%;
+            pointer-events: none; animation: smoke 2s forwards;
+        }
+        @keyframes smoke {
+            0% { opacity: 0.8; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(2); }
+        }
+        #ageVerification {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .age-box {
+            background: rgba(255, 255, 255, 0.1); padding: 30px;
+            border-radius: 15px; text-align: center; max-width: 500px; color: #ffffff;
+        }
+        .age-box h2 { color: #ff0000; margin-bottom: 20px; }
+        .age-box p { margin-bottom: 20px; line-height: 1.5; color: #ffffff; }
+        .warning-text {
+            color: #ff4444; font-size: 16px; margin: 20px 0;
+            padding: 15px; background: rgba(255, 0, 0, 0.1); border-radius: 5px;
+        }
+        .health-impact {
+            background: rgba(255, 0, 0, 0.1); padding: 10px;
+            border-radius: 5px; margin: 10px 0; font-size: 14px; color: #ff4444;
+        }
+        .help-resources {
+            margin-top: 20px; padding: 15px;
+            background: rgba(255, 255, 255, 0.1); border-radius: 5px; font-size: 14px;
+        }
+        .cost-tracker {
+            background: rgba(255, 0, 0, 0.1); padding: 15px;
+            border-radius: 5px; margin: 15px 0; font-size: 16px; color: #ff4444;
+        }
+        .cost-details { font-size: 13px; margin-top: 10px; text-align: left; padding-left: 10px; }
+        .usage-type-selector, .strain-selector {
+            margin: 10px 0; padding: 10px;
+            background: rgba(0, 0, 0, 0.2); border-radius: 5px;
+        }
+        .strain-selector label { display: block; margin-bottom: 6px; font-size: 14px; }
+        #strainSearch {
+            width: calc(100% - 26px); margin-bottom: 6px;
+            background: rgba(0,0,0,0.3); color: #00ffff; border: 1px solid #00ffff;
+        }
+        #strainSelect { width: 100%; }
+        #selectedStrainInfo { font-size: 13px; margin-top: 6px; color: #ffcc70; }
+    </style>
 </head>
 <body>
-  <div id="ageVerification">
-    <div class="age-box">
-      <h2>Age Verification Required</h2>
-      <p>Warning: This website is intended for individuals who are trying to track and reduce cannabis use. It contains information about substance use.</p>
-      <p>You must be 18 years or older to access this site.</p>
-      <button onclick="verifyAge(true)">I am 18 or older</button>
-      <button onclick="verifyAge(false)">I am under 18</button>
-    </div>
-  </div>
-
-  <div id="container" style="display: none;">
-    <h1>Cannabis Usage Tracker</h1>
-    <div class="warning-text">
-      This tool is designed to help you track and reduce your cannabis consumption.
-      Regular cannabis use can affect memory, learning, and mental health.
-    </div>
-    <select id="users" onchange="switchUser()"></select>
-    <div id="newUserBox">
-      <input id="newUserName" placeholder="Enter Name" />
-      <button onclick="addUser()">Add</button>
+    <div id="ageVerification">
+        <div class="age-box">
+            <h2>Age Verification Required</h2>
+            <p>Warning: This website is intended for individuals who are trying to track and reduce cannabis use.</p>
+            <p>You must be 18 years or older to access this site.</p>
+            <button onclick="verifyAge(true)">I am 18 or older</button>
+            <button onclick="verifyAge(false)">I am under 18</button>
+        </div>
     </div>
 
-    <div class="usage-type-selector">
-      <label>Usage Type:</label>
-      <select id="usageType" onchange="updateCounts()">
-        <option value="puff">Bong/Pipe Puff</option>
-        <option value="joint">Joint</option>
-      </select>
+    <div id="container" style="display: none;">
+        <h1>Cannabis Usage Tracker</h1>
+
+        <div class="warning-text">
+            This tool helps you track and reduce cannabis consumption. Regular cannabis use can affect memory, learning, and mental health.
+        </div>
+
+        <div>
+            <select id="users" onchange="switchUser()"></select>
+            <div id="newUserBox">
+                <input type="text" id="newUserName" placeholder="Enter Name">
+                <button onclick="addUser()">Add</button>
+            </div>
+        </div>
+
+        <div class="usage-type-selector">
+            Usage Type:
+            <select id="usageType" onchange="updateCounts()">
+                <option value="puff">Bong/Pipe Puff (~0.1g)</option>
+                <option value="joint">Joint (~0.32g)</option>
+            </select>
+        </div>
+
+        <div class="strain-selector">
+            <label>Select Strain (SQDC Québec – Feb 2026):</label>
+            <input type="text" id="strainSearch" placeholder="Search strain or brand..." oninput="filterStrains()">
+            <select id="strainSelect" size="5" onchange="onStrainChange()"></select>
+            <div id="selectedStrainInfo">Average QC price: $7.24/g</div>
+        </div>
+
+        <div id="puffCount">0</div>
+
+        <div class="cost-tracker">
+            Estimated Money Spent: $<span id="moneySpent">0.00</span>
+            <div class="cost-details" id="costDetails">
+                Using average QC price: $7.24/g<br>
+                Joint ≈ 0.32g ($2.32 each) | Puff ≈ 0.1g ($0.72 each)
+            </div>
+        </div>
+
+        <div class="health-impact">
+            Frequent cannabis use may lead to:<br>
+            - Impaired memory and concentration<br>
+            - Reduced motivation<br>
+            - Increased risk of anxiety and depression
+            <br><small>(visit <a href="https://www.canada.ca/en/services/health/campaigns/cannabis/health-effects.html" target="_blank" style="color: #ffaaaa;">Health Canada</a> to learn more)</small>
+        </div>
+
+        <button id="puffButton" onclick="puff()">Log Usage</button>
+        <button onclick="reset()">Reset</button>
+
+        <div class="help-resources">
+            <h3>Need Help?</h3>
+            <p>Drug &amp; Alcohol Helpline: 1-800-565-8603</p>
+            <p>Cannabis Consultation: 1-833-CANNABIS</p>
+            <a href="https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/health-effects/addiction.html" target="_blank" style="color: #00ffff;">Visit Health Canada</a>
+        </div>
     </div>
 
-    <div id="puffCount">0</div>
-    
-    <div class="cost-tracker">
-      <div>Estimated Money Spent: $<span id="moneySpent">0.00</span></div>
-      <div class="cost-details">
-        Based on average Canadian prices:
-        <br>- $20 per 3.5g
-        <br>- Joint ≈ 0.32g ($1.83 each)
-        <br>- Bong/Pipe puff ≈ 0.1g ($0.57 each)
-      </div>
-    </div>
+    <script>
+        const SQDC_PRODUCTS = [{"brand": "1964 SUPPLY CO", "product": "Bleu Nuit", "size": "3.5g", "price": 30.3, "pricePerGram": 8.66}, {"brand": "1964 SUPPLY CO", "product": "OG Kush", "size": "1g", "price": 10.6, "pricePerGram": 10.6}, {"brand": "1964 SUPPLY CO", "product": "Organic Comatose", "size": "3.5g", "price": 30.3, "pricePerGram": 8.66}, {"brand": "BACK FORTY", "product": "Fire Breath", "size": "28g", "price": 125.8, "pricePerGram": 4.49}, {"brand": "BACK FORTY", "product": "Liquid Imagination", "size": "28g", "price": 125.8, "pricePerGram": 4.49}, {"brand": "BAKE SALE", "product": "All Purpose Flower Sativa", "size": "28g", "price": 89.9, "pricePerGram": 3.21}, {"brand": "BIG BAG O BUDS", "product": "Amnesia OG", "size": "28g", "price": 99.9, "pricePerGram": 3.57}, {"brand": "BLAKH", "product": "H30 Haze", "size": "3.5g", "price": 30.9, "pricePerGram": 8.83}, {"brand": "BLAKH", "product": "H30 Kush", "size": "3.5g", "price": 30.9, "pricePerGram": 8.83}, {"brand": "BLANH", "product": "Hybride Balance", "size": "3.5g", "price": 20.9, "pricePerGram": 5.97}, {"brand": "BLEE", "product": "Panier Fruite", "size": "3.5g", "price": 26.9, "pricePerGram": 7.69}, {"brand": "BLEUH", "product": "CBD a la Lime", "size": "15g", "price": 71.8, "pricePerGram": 4.79}, {"brand": "BOLD", "product": "Cool Aid Kush", "size": "15g", "price": 115.0, "pricePerGram": 7.67}, {"brand": "BOLD", "product": "Root Beer Float", "size": "3.5g", "price": 33.5, "pricePerGram": 9.57}, {"brand": "BON JAK", "product": "Kali Mist", "size": "3.5g", "price": 22.0, "pricePerGram": 6.29}, {"brand": "BOUKET", "product": "Brise Fruitee", "size": "15g", "price": 89.0, "pricePerGram": 5.93}, {"brand": "BUD LAFLEUR", "product": "Banana Baby", "size": "3.5g", "price": 27.0, "pricePerGram": 7.71}, {"brand": "BUD LAFLEUR", "product": "Banana Daddy", "size": "3.5g", "price": 27.0, "pricePerGram": 7.71}, {"brand": "BUD LAFLEUR", "product": "Hollywood", "size": "3.5g", "price": 27.9, "pricePerGram": 7.97}, {"brand": "CANNABIOMEDIC", "product": "Juste CBD", "size": "3.5g", "price": 27.6, "pricePerGram": 7.89}, {"brand": "CANNAFROGS", "product": "Fruitloops And Fuel", "size": "3.5g", "price": 31.9, "pricePerGram": 9.11}, {"brand": "CANNAFROGS", "product": "Orange Creamsicle", "size": "3.5g", "price": 27.8, "pricePerGram": 7.94}, {"brand": "CARMEL", "product": "Zebra Stripes", "size": "3.5g", "price": 37.6, "pricePerGram": 10.74}, {"brand": "CARNAVAL", "product": "Carnaval Kush", "size": "15g", "price": 89.4, "pricePerGram": 5.96}, {"brand": "CHEERS CANNABIS", "product": "Chem Cookies #44", "size": "3.5g", "price": 30.6, "pricePerGram": 8.74}, {"brand": "CHEERS CANNABIS", "product": "Pomelo Soda", "size": "3.5g", "price": 24.9, "pricePerGram": 7.11}, {"brand": "CLAIR DE LUNE", "product": "GG", "size": "1g", "price": 9.6, "pricePerGram": 9.6}, {"brand": "CLEM & CO", "product": "Apricot Cream x Cheese 1:1", "size": "3.5g", "price": 29.9, "pricePerGram": 8.54}, {"brand": "CLEM & CO", "product": "Grand Indica", "size": "28g", "price": 177.6, "pricePerGram": 6.34}, {"brand": "CLEM & CO", "product": "Lab 101", "size": "15g", "price": 110.0, "pricePerGram": 7.33}, {"brand": "CULTURES CHLORIS", "product": "LCP", "size": "15g", "price": 102.0, "pricePerGram": 6.8}, {"brand": "CULTURES CHLORIS", "product": "Red Red Wine", "size": "28g", "price": 161.0, "pricePerGram": 5.75}, {"brand": "ENDO", "product": "Purple Mountain Majesty", "size": "3.5g", "price": 26.1, "pricePerGram": 7.46}, {"brand": "FLEURS DE LISE", "product": "L' Joe Louis", "size": "28g", "price": 150.5, "pricePerGram": 5.38}, {"brand": "FLEURS DE LISE", "product": "L'Bon Voisin", "size": "1g", "price": 10.0, "pricePerGram": 10.0}, {"brand": "FLEURS DE LISE", "product": "MANDARIN COOKIES 2ND CUT", "size": "3.5g", "price": 27.9, "pricePerGram": 7.97}, {"brand": "FLEURONS", "product": "Herbes De Province", "size": "28g", "price": 159.0, "pricePerGram": 5.68}, {"brand": "FLEURONS", "product": "Menu Dessert", "size": "3.5g", "price": 26.9, "pricePerGram": 7.69}, {"brand": "GOLDH", "product": "Kik Cola", "size": "3.5g", "price": 35.1, "pricePerGram": 10.03}, {"brand": "GOOD SUPPLY", "product": "Grand Daddy Purps Whole Flower", "size": "3.5g", "price": 21.1, "pricePerGram": 6.03}, {"brand": "GOOD SUPPLY", "product": "Hawaiian Trainwreck", "size": "3.5g", "price": 19.9, "pricePerGram": 5.69}, {"brand": "GOOD SUPPLY", "product": "Jean Guy", "size": "15g", "price": 85.0, "pricePerGram": 5.67}, {"brand": "GOOD SUPPLY", "product": "PINEAPPLE EXPRESS", "size": "3.5g", "price": 21.1, "pricePerGram": 6.03}, {"brand": "GOOD SUPPLY", "product": "Very Berry", "size": "28g", "price": 125.8, "pricePerGram": 4.49}, {"brand": "GRAIL", "product": "Gary Payton", "size": "3.5g", "price": 29.3, "pricePerGram": 8.37}, {"brand": "GREEN JOY", "product": "Grape Yogurt", "size": "3.5g", "price": 30.5, "pricePerGram": 8.71}, {"brand": "GREEN JOY", "product": "Lemon Pepper Punch", "size": "28g", "price": 179.0, "pricePerGram": 6.39}, {"brand": "GREEN JOY", "product": "Mango Cheese", "size": "3.5g", "price": 27.9, "pricePerGram": 7.97}, {"brand": "GRINDH", "product": "H27 Indica", "size": "15g", "price": 70.9, "pricePerGram": 4.73}, {"brand": "GRINDH", "product": "H27 Sativa", "size": "15g", "price": 70.9, "pricePerGram": 4.73}, {"brand": "HATRICK", "product": "Meat Breath", "size": "3.5g", "price": 40.1, "pricePerGram": 11.46}, {"brand": "HERBE & CO", "product": "Zenitude", "size": "3.5g", "price": 27.8, "pricePerGram": 7.94}, {"brand": "HEXO", "product": "Lagoon", "size": "3.5g", "price": 21.4, "pricePerGram": 6.11}, {"brand": "HEXO", "product": "Lemon Haze", "size": "3.5g", "price": 21.0, "pricePerGram": 6.0}, {"brand": "HIGHLY DUTCH", "product": "Amsterdam Sativa", "size": "28g", "price": 147.3, "pricePerGram": 5.26}, {"brand": "HOMAGE", "product": "Citrus Tsunami", "size": "3.5g", "price": 36.1, "pricePerGram": 10.31}, {"brand": "IRONY", "product": "Mouture 2.0", "size": "15g", "price": 72.7, "pricePerGram": 4.85}, {"brand": "IRONY", "product": "Premiere Mouture", "size": "15g", "price": 72.1, "pricePerGram": 4.81}, {"brand": "KOKOTTE", "product": "Cap J", "size": "3.5g", "price": 28.6, "pricePerGram": 8.17}, {"brand": "KOKOTTE", "product": "Mango K", "size": "3.5g", "price": 28.6, "pricePerGram": 8.17}, {"brand": "LA BATCH", "product": "Citron XXX", "size": "15g", "price": 64.5, "pricePerGram": 4.3}, {"brand": "LE MALIN VERT", "product": "Alien Kush Aaa", "size": "3.5g", "price": 27.8, "pricePerGram": 7.94}, {"brand": "LOT420", "product": "Gelato 33", "size": "3.5g", "price": 41.2, "pricePerGram": 11.77}, {"brand": "MAITRI", "product": "Lazy Berry Blaze", "size": "28g", "price": 94.9, "pricePerGram": 3.39}, {"brand": "MAITRI", "product": "Purple Mint Cake", "size": "3.5g", "price": 19.9, "pricePerGram": 5.69}, {"brand": "NUGZ", "product": "Drip N Jiggle Grind", "size": "15g", "price": 70.1, "pricePerGram": 4.67}, {"brand": "NUGZ", "product": "Early Lemon Berry", "size": "28g", "price": 153.0, "pricePerGram": 5.46}, {"brand": "NUGZ", "product": "Meat Pie", "size": "3.5g", "price": 19.9, "pricePerGram": 5.69}, {"brand": "NUGZ", "product": "Nugz Sativa", "size": "15g", "price": 85.0, "pricePerGram": 5.67}, {"brand": "NUEVA", "product": "Beau Dimanche", "size": "3.5g", "price": 24.5, "pricePerGram": 7.0}, {"brand": "OMY", "product": "KUSH COOKIES", "size": "3.5g", "price": 26.7, "pricePerGram": 7.63}, {"brand": "OMY", "product": "M\u00e9lange Indica", "size": "28g", "price": 135.6, "pricePerGram": 4.84}, {"brand": "OMY", "product": "Royal Mauiberry", "size": "3.5g", "price": 26.7, "pricePerGram": 7.63}, {"brand": "ONO CANNABIS", "product": "Ono Celui-la", "size": "3.5g", "price": 44.9, "pricePerGram": 12.83}, {"brand": "ORCHID CBD", "product": "CBD Runtz", "size": "3.5g", "price": 25.6, "pricePerGram": 7.31}, {"brand": "ORIGINAL STASH", "product": "OS.130", "size": "28g", "price": 125.7, "pricePerGram": 4.49}, {"brand": "OSTARA", "product": "Grape Stank", "size": "3.5g", "price": 39.9, "pricePerGram": 11.4}, {"brand": "PALMETTO", "product": "Pineapple Upside Down Cke", "size": "28g", "price": 132.0, "pricePerGram": 4.71}, {"brand": "PECKO", "product": "Le P'tit Pheno CBD", "size": "1g", "price": 11.9, "pricePerGram": 11.9}, {"brand": "PISTOL AND PARIS", "product": "Pink Panties", "size": "3.5g", "price": 40.0, "pricePerGram": 11.43}, {"brand": "PROMENADE", "product": "Berry Cream Puff", "size": "3.5g", "price": 21.4, "pricePerGram": 6.11}, {"brand": "PROMENADE", "product": "Cannatonic", "size": "3.5g", "price": 21.4, "pricePerGram": 6.11}, {"brand": "PROMENADE", "product": "Harlequin 1:1", "size": "28g", "price": 125.8, "pricePerGram": 4.49}, {"brand": "PROMENADE", "product": "Pennywise 1:1", "size": "3.5g", "price": 21.4, "pricePerGram": 6.11}, {"brand": "PROMENADE", "product": "Pine Tar Kush", "size": "28g", "price": 125.8, "pricePerGram": 4.49}, {"brand": "PROMENADE", "product": "Sac Banane", "size": "3.5g", "price": 20.9, "pricePerGram": 5.97}, {"brand": "PROMENADE", "product": "Sour Tangie", "size": "28g", "price": 109.9, "pricePerGram": 3.93}, {"brand": "PROMENADE", "product": "Sugar Cookies", "size": "3.5g", "price": 21.4, "pricePerGram": 6.11}, {"brand": "PROMENADE", "product": "Tropicali 1:1", "size": "15g", "price": 67.5, "pricePerGram": 4.5}, {"brand": "PURE LAINE CANNABIS", "product": "Gros Plaisirs", "size": "28g", "price": 129.8, "pricePerGram": 4.64}, {"brand": "PURE LAINE CANNABIS", "product": "La Moulinette", "size": "15g", "price": 70.1, "pricePerGram": 4.67}, {"brand": "PURE LAINE CANNABIS", "product": "Pineapple OG", "size": "3.5g", "price": 25.2, "pricePerGram": 7.2}, {"brand": "R'BELLE", "product": "Bastille", "size": "3.5g", "price": 24.9, "pricePerGram": 7.11}, {"brand": "R'BELLE", "product": "Marseille", "size": "3.5g", "price": 25.4, "pricePerGram": 7.26}, {"brand": "R'BELLE", "product": "Saint-laurent", "size": "3.5g", "price": 24.9, "pricePerGram": 7.11}, {"brand": "SAINT-LAURENT CANNABIS", "product": "Holy Kush", "size": "3.5g", "price": 30.6, "pricePerGram": 8.74}, {"brand": "SAN RAFAEL '71", "product": "Pink Kush", "size": "3.5g", "price": 31.1, "pricePerGram": 8.89}, {"brand": "SAN RAFAEL '71", "product": "Stink Biscuit", "size": "3.5g", "price": 31.1, "pricePerGram": 8.89}, {"brand": "SAN RAFAEL '71", "product": "Strawberry Sensi", "size": "3.5g", "price": 31.1, "pricePerGram": 8.89}, {"brand": "SAN RAFAEL '71", "product": "Tangerine Dream", "size": "3.5g", "price": 29.1, "pricePerGram": 8.31}, {"brand": "SEAWEED", "product": "Red Velvet Ice Cream", "size": "3.5g", "price": 26.9, "pricePerGram": 7.69}, {"brand": "SHRED", "product": "Baie Sauvage", "size": "15g", "price": 65.4, "pricePerGram": 4.36}, {"brand": "SHRED", "product": "Citrique \u00e9lectrique", "size": "15g", "price": 66.4, "pricePerGram": 4.43}, {"brand": "SIMPLY BARE", "product": "BC Bubba Pink Biologique", "size": "3.5g", "price": 46.4, "pricePerGram": 13.26}, {"brand": "SIMPLY BARE", "product": "BC Organic Fire OG", "size": "3.5g", "price": 44.9, "pricePerGram": 12.83}, {"brand": "SIMPLY BARE", "product": "BC Organic Fruit Loopz", "size": "3.5g", "price": 44.9, "pricePerGram": 12.83}, {"brand": "SOLEI", "product": "Free", "size": "3.5g", "price": 27.0, "pricePerGram": 7.71}, {"brand": "SONIQUE", "product": "Cotton Candy", "size": "3.5g", "price": 20.9, "pricePerGram": 5.97}, {"brand": "SPINACH", "product": "GMO Cookies", "size": "3.5g", "price": 26.9, "pricePerGram": 7.69}, {"brand": "SPINACH", "product": "Lemon Skunk", "size": "28g", "price": 130.2, "pricePerGram": 4.65}, {"brand": "SUMO", "product": "Citron Atomique", "size": "15g", "price": 74.9, "pricePerGram": 4.99}, {"brand": "SUMO", "product": "Mac Deluxe", "size": "3.5g", "price": 33.1, "pricePerGram": 9.46}, {"brand": "SUMO", "product": "Papaya Bomb", "size": "3.5g", "price": 25.3, "pricePerGram": 7.23}, {"brand": "SUMO", "product": "Tropical Splash", "size": "3.5g", "price": 26.6, "pricePerGram": 7.6}, {"brand": "T'ES DANS L'CHAMP", "product": "Aweille Reveille", "size": "3.5g", "price": 21.9, "pricePerGram": 6.26}, {"brand": "T'ES DANS L'CHAMP", "product": "\u00c7a Varie", "size": "28g", "price": 125.5, "pricePerGram": 4.48}, {"brand": "T'ES DANS L'CHAMP", "product": "Dans le Divan", "size": "3.5g", "price": 19.9, "pricePerGram": 5.69}, {"brand": "T'ES DANS L'CHAMP", "product": "Grasse Matin\u00e9e", "size": "3.5g", "price": 19.9, "pricePerGram": 5.69}, {"brand": "TAM TAMS", "product": "Blood Orange", "size": "28g", "price": 142.9, "pricePerGram": 5.1}, {"brand": "TAM TAMS", "product": "Symphonie", "size": "28g", "price": 140.0, "pricePerGram": 5.0}, {"brand": "TAM TAMS", "product": "Tropical Milkshake", "size": "3.5g", "price": 55.1, "pricePerGram": 15.74}, {"brand": "TERREBUD", "product": "Super Top Gun", "size": "3.5g", "price": 30.5, "pricePerGram": 8.71}, {"brand": "TERROIR", "product": "Bien \u00e0 L'haze", "size": "3.5g", "price": 24.0, "pricePerGram": 6.86}, {"brand": "TERROIR", "product": "Insperimental", "size": "3.5g", "price": 24.0, "pricePerGram": 6.86}, {"brand": "TERROIR", "product": "Kush Tot", "size": "3.5g", "price": 25.9, "pricePerGram": 7.4}, {"brand": "TERROIR", "product": "La Sournoise", "size": "3.5g", "price": 25.9, "pricePerGram": 7.4}, {"brand": "TERROIR", "product": "Soir De Semaine", "size": "3.5g", "price": 25.9, "pricePerGram": 7.4}, {"brand": "THE LOUD PLUG", "product": "Exotic Gas", "size": "28g", "price": 144.9, "pricePerGram": 5.18}, {"brand": "TRAILBLAZER", "product": "Apples & Cream", "size": "3.5g", "price": 22.9, "pricePerGram": 6.54}, {"brand": "TRIBAL", "product": "Bubble Up", "size": "3.5g", "price": 25.6, "pricePerGram": 7.31}, {"brand": "TRIBAL", "product": "Cuban Linx", "size": "3.5g", "price": 25.6, "pricePerGram": 7.31}, {"brand": "TRIBAL", "product": "Gelato Mint", "size": "3.5g", "price": 25.6, "pricePerGram": 7.31}, {"brand": "TWEED", "product": "Lemon Meringue Pie", "size": "15g", "price": 84.9, "pricePerGram": 5.66}, {"brand": "TWD.", "product": "Balanced", "size": "3.5g", "price": 21.2, "pricePerGram": 6.06}, {"brand": "UNCOMMON CANNABIS", "product": "Rose Gold Pave", "size": "3.5g", "price": 26.9, "pricePerGram": 7.69}, {"brand": "VELADA", "product": "Painted Lady", "size": "15g", "price": 83.3, "pricePerGram": 5.55}, {"brand": "VERTICAL", "product": "SuperBoof", "size": "3.5g", "price": 42.0, "pricePerGram": 12.0}, {"brand": "WIO", "product": "Super Lemon Haze Biologique", "size": "3.5g", "price": 33.9, "pricePerGram": 9.69}, {"brand": "WIO", "product": "Top Cola AAAA", "size": "3.5g", "price": 45.9, "pricePerGram": 13.11}, {"brand": "WIO", "product": "Tropicana Cherry Biologique", "size": "3.5g", "price": 41.9, "pricePerGram": 11.97}, {"brand": "WO LA", "product": "Black Cherry Punch", "size": "3.5g", "price": 22.4, "pricePerGram": 6.4}, {"brand": "WO LA", "product": "Uk Cheddar Cheese", "size": "28g", "price": 130.2, "pricePerGram": 4.65}, {"brand": "WO LA", "product": "Ultra Jean-G", "size": "28g", "price": 130.2, "pricePerGram": 4.65}, {"brand": "XK", "product": "MiXK", "size": "15g", "price": 69.0, "pricePerGram": 4.6}, {"brand": "XOPRO", "product": "Coup De Foudre", "size": "3.5g", "price": 27.8, "pricePerGram": 7.94}, {"brand": "XOPRO", "product": "Time Wreck", "size": "3.5g", "price": 27.6, "pricePerGram": 7.89}];
 
-    <div class="health-impact">
-      Frequent cannabis use may lead to:
-      <br>- Impaired memory and concentration
-      <br>- Reduced motivation
-      <br>- Increased risk of anxiety and depression
-      <br>- Potential legal implications (visit <a href="https://www.canada.ca/en/services/health/campaigns/cannabis/health-effects.html" style="color: #ff4444;">Health Canada</a> to learn more)
-    </div>
-    <button id="puffButton" onclick="puff()">Log Usage</button>
-    <button onclick="reset()">Reset</button>
+        const AVG_COST_PER_GRAM = 7.24;
+        const GRAMS_PER_JOINT = 0.32;
+        const GRAMS_PER_PUFF = 0.1;
 
-    <div class="help-resources">
-      <h3>Need Help? Canadian Resources Available:</h3>
-      <p>Drug & Alcohol Helpline: 1-800-565-8603</p>
-      <p>ConnexOntario: 1-866-531-2600 (24/7 addiction services)</p>
-      <p>Cannabis Consultation: 1-833-CANNABIS (1-833-226-6227)</p>
-      <p>Free, confidential help available in English & French</p>
-      <p><small>Visit <a href="https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/health-effects/addiction.html" style="color: #00ffff;">Health Canada</a> for more resources</small></p>
-    </div>
-  </div>
+        let counts = {};
+        let user = null;
+        let activeCostPerGram = AVG_COST_PER_GRAM;
+        let localStorageAvailable = isLocalStorageAvailable();
 
-  <script>
-    let counts = {};
-    let user = null;
-    let localStorageAvailable = isLocalStorageAvailable();
+        if (localStorageAvailable) {
+            const stored = localStorage.getItem('puffCounts');
+            if (stored) counts = JSON.parse(stored);
+        }
 
-    // Constants for cost calculations
-    const COST_PER_GRAM = 5.71; // $20/3.5g
-    const GRAMS_PER_JOINT = 0.32;
-    const GRAMS_PER_PUFF = 0.1;
+        function populateStrains(filter = '') {
+            const sel = document.getElementById('strainSelect');
+            const prev = sel.value;
+            sel.innerHTML = '<option value="avg">-- Average QC Price ($7.24/g) --</option>';
+            const f = filter.toLowerCase();
+            SQDC_PRODUCTS.filter(p =>
+                p.brand.toLowerCase().includes(f) || p.product.toLowerCase().includes(f)
+            ).forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.pricePerGram;
+                opt.textContent = p.brand + ' \u2013 ' + p.product + ' (' + p.size + ') \u00b7 $' + p.pricePerGram + '/g';
+                sel.appendChild(opt);
+            });
+            if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
+            onStrainChange();
+        }
 
-    if (localStorageAvailable) {
-      const storedCounts = localStorage.getItem('puffCounts');
-      if (storedCounts) counts = JSON.parse(storedCounts);
-    } else {
-      alert('Local storage is not available. Data will not be saved.');
-    }
+        function filterStrains() {
+            populateStrains(document.getElementById('strainSearch').value);
+        }
 
-    const usersSelect = document.getElementById('users');
-    for (let u in counts) usersSelect.appendChild(new Option(u, u));
-    usersSelect.appendChild(new Option('Add User', 'new'));
+        function onStrainChange() {
+            const sel = document.getElementById('strainSelect');
+            const info = document.getElementById('selectedStrainInfo');
+            if (!sel.value || sel.value === 'avg') {
+                activeCostPerGram = AVG_COST_PER_GRAM;
+                info.textContent = 'Using average QC price: $7.24/g';
+            } else {
+                activeCostPerGram = parseFloat(sel.value);
+                info.textContent = 'Selected: ' + sel.options[sel.selectedIndex].textContent;
+            }
+            updateCounts();
+        }
 
-    user = localStorageAvailable ? localStorage.getItem('currentUser') : null;
-    if (user && counts[user]) usersSelect.value = user;
-    else if (Object.keys(counts).length > 0) {
-      user = Object.keys(counts)[0];
-      usersSelect.value = user;
-    } else {
-      user = null;
-      usersSelect.value = 'new';
-    }
-    updateCounts();
+        const usersSelect = document.getElementById('users');
+        for (let u in counts) usersSelect.appendChild(new Option(u, u));
+        usersSelect.appendChild(new Option('Add User', 'new'));
 
-    if (usersSelect.value === 'new') document.getElementById('newUserBox').style.display = 'block';
+        user = localStorageAvailable ? localStorage.getItem('currentUser') : null;
+        if (user && counts[user] !== undefined) {
+            usersSelect.value = user;
+        } else if (Object.keys(counts).length > 0) {
+            user = Object.keys(counts)[0];
+            usersSelect.value = user;
+        } else {
+            user = null;
+            usersSelect.value = 'new';
+        }
 
-    function verifyAge(isAdult) {
-      if (!isAdult) {
-        window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
-        return;
-      }
-      document.getElementById('ageVerification').style.display = 'none';
-      document.getElementById('container').style.display = 'block';
-    }
-
-    function isLocalStorageAvailable() {
-      try {
-        localStorage.setItem('__test__', '__test__');
-        localStorage.removeItem('__test__');
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-
-    function switchUser() {
-      const dropdown = document.getElementById('users');
-      const newUserBox = document.getElementById('newUserBox');
-      if (dropdown.value === 'new') {
-        newUserBox.style.display = 'block';
-      } else {
-        newUserBox.style.display = 'none';
-        user = dropdown.value;
-        if (localStorageAvailable) localStorage.setItem('currentUser', user);
+        populateStrains();
         updateCounts();
-      }
-    }
+        if (usersSelect.value === 'new') document.getElementById('newUserBox').style.display = 'block';
 
-    function addUser() {
-      const newUserName = document.getElementById('newUserName');
-      const name = newUserName.value.trim();
-      if (!name) return;
+        function verifyAge(isAdult) {
+            if (!isAdult) {
+                window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
+                return;
+            }
+            document.getElementById('ageVerification').style.display = 'none';
+            document.getElementById('container').style.display = 'block';
+        }
 
-      counts[name] = 0;
-      if (localStorageAvailable) localStorage.setItem('puffCounts', JSON.stringify(counts));
-      const option = new Option(name, name);
-      usersSelect.insertBefore(option, usersSelect.lastElementChild);
-      usersSelect.value = name;
-      user = name;
-      if (localStorageAvailable) localStorage.setItem('currentUser', user);
-      updateCounts();
-      newUserName.value = '';
-      document.getElementById('newUserBox').style.display = 'none';
-    }
+        function isLocalStorageAvailable() {
+            try { localStorage.setItem('__t__', '1'); localStorage.removeItem('__t__'); return true; }
+            catch (e) { return false; }
+        }
 
-    function createSmoke(x, y) {
-      const smoke = document.createElement('div');
-      smoke.className = 'smoke';
-      smoke.style.left = `${x}px`;
-      smoke.style.top = `${y}px`;
-      document.body.appendChild(smoke);
-      setTimeout(() => smoke.remove(), 2000);
-    }
+        function switchUser() {
+            const dropdown = document.getElementById('users');
+            if (dropdown.value === 'new') {
+                document.getElementById('newUserBox').style.display = 'block';
+            } else {
+                document.getElementById('newUserBox').style.display = 'none';
+                user = dropdown.value;
+                if (localStorageAvailable) localStorage.setItem('currentUser', user);
+                updateCounts();
+            }
+        }
 
-    function puff() {
-      if (!user) {
-        alert('Please add a user first.');
-        return;
-      }
-      counts[user]++;
-      updateCounts();
-      if (localStorageAvailable) localStorage.setItem('puffCounts', JSON.stringify(counts));
+        function addUser() {
+            const input = document.getElementById('newUserName');
+            const name = input.value.trim();
+            if (!name) return;
+            counts[name] = 0;
+            if (localStorageAvailable) localStorage.setItem('puffCounts', JSON.stringify(counts));
+            usersSelect.insertBefore(new Option(name, name), usersSelect.lastElementChild);
+            usersSelect.value = name;
+            user = name;
+            if (localStorageAvailable) localStorage.setItem('currentUser', user);
+            updateCounts();
+            input.value = '';
+            document.getElementById('newUserBox').style.display = 'none';
+        }
 
-      const btn = document.getElementById('puffButton');
-      const rect = btn.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2 - 7.5;
-      const centerY = rect.top + rect.height / 2 - 7.5;
-      for (let i = 0; i < 3; i++) {
-        const offsetX = centerX + (Math.random() - 0.5) * 20;
-        const offsetY = centerY + (Math.random() - 0.5) * 20;
-        createSmoke(offsetX, offsetY);
-      }
-    }
+        function createSmoke(x, y) {
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke';
+            smoke.style.left = x + 'px';
+            smoke.style.top = y + 'px';
+            document.body.appendChild(smoke);
+            setTimeout(() => smoke.remove(), 2000);
+        }
 
-    function reset() {
-      if (confirm('Reset puff count?') && user) {
-        counts[user] = 0;
-        updateCounts();
-        if (localStorageAvailable) localStorage.setItem('puffCounts', JSON.stringify(counts));
-      }
-    }
+        function puff() {
+            if (!user) { alert('Please add a user first.'); return; }
+            counts[user]++;
+            updateCounts();
+            if (localStorageAvailable) localStorage.setItem('puffCounts', JSON.stringify(counts));
+            const btn = document.getElementById('puffButton');
+            const rect = btn.getBoundingClientRect();
+            for (let i = 0; i < 3; i++) {
+                createSmoke(
+                    rect.left + rect.width/2 - 7.5 + (Math.random()-0.5)*20,
+                    rect.top + rect.height/2 - 7.5 + (Math.random()-0.5)*20
+                );
+            }
+        }
 
-    function updateCounts() {
-      const usageCount = user ? counts[user] : 0;
-      document.getElementById('puffCount').textContent = usageCount;
-      
-      // Calculate cost based on usage type
-      const usageType = document.getElementById('usageType').value;
-      let totalCost;
-      
-      if (usageType === 'joint') {
-        totalCost = usageCount * (GRAMS_PER_JOINT * COST_PER_GRAM);
-      } else { // puff
-        totalCost = usageCount * (GRAMS_PER_PUFF * COST_PER_GRAM);
-      }
-      
-      document.getElementById('moneySpent').textContent = totalCost.toFixed(2);
-      
-      // Update warning message based on usage
-      const warningText = document.querySelector('.warning-text');
-      warningText.innerHTML = `This tool is designed to help you track and reduce your cannabis consumption.
-        Regular cannabis use can affect memory, learning, and mental health.`;
-      
-      if (usageCount > 50) {
-        warningText.innerHTML += '<br><strong>Your usage is high. Consider speaking with a counselor.</strong>';
-      }
-      
-      // Add financial impact warning
-      if (totalCost > 100) {
-        warningText.innerHTML += `<br><strong>You've spent over $${totalCost.toFixed(2)} on cannabis. 
-          Consider the financial impact of your usage.</strong>`;
-      }
-    }
-  </script>
+        function reset() {
+            if (confirm('Reset puff count?') && user) {
+                counts[user] = 0;
+                updateCounts();
+                if (localStorageAvailable) localStorage.setItem('puffCounts', JSON.stringify(counts));
+            }
+        }
+
+        function updateCounts() {
+            const usageCount = user ? (counts[user] || 0) : 0;
+            document.getElementById('puffCount').textContent = usageCount;
+            const usageType = document.getElementById('usageType').value;
+            const gramsPerUse = usageType === 'joint' ? GRAMS_PER_JOINT : GRAMS_PER_PUFF;
+            const costPerUse = gramsPerUse * activeCostPerGram;
+            const totalCost = usageCount * costPerUse;
+            document.getElementById('moneySpent').textContent = totalCost.toFixed(2);
+            document.getElementById('costDetails').innerHTML =
+                'Using: $' + activeCostPerGram.toFixed(2) + '/g &nbsp;|&nbsp; ' +
+                (usageType === 'joint' ? 'Joint' : 'Puff') + ' = ~' + gramsPerUse + 'g = $' + costPerUse.toFixed(2) + ' each';
+            const warningText = document.querySelector('.warning-text');
+            let msg = 'This tool helps you track and reduce cannabis consumption. Regular cannabis use can affect memory, learning, and mental health.';
+            if (usageCount > 50) msg += '<br><strong>\u26a0\ufe0f Your usage is high. Consider speaking with a counselor.</strong>';
+            if (totalCost > 100) msg += '<br><strong>\u26a0\ufe0f You have spent over $' + totalCost.toFixed(2) + ' on cannabis.</strong>';
+            warningText.innerHTML = msg;
+        }
+    </script>
 </body>
 </html>
