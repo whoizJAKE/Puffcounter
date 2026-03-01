@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  /png" href="MyamnarCIGGARETTEhasbullah.jpeg"/>
-  <title>Puff Counter - Track & Quit Smoking</title>
+  <link rel="icon" type="image/png" href="MyamnarCIGGARETTEhasbullah.jpeg"/>
+  <title>Puff Counter - Track &amp; Quit Smoking</title>
   <style>
     body {
       margin: 0;
@@ -187,7 +187,7 @@
       </div>
     </div>
     <div class="cig-selector">
-      abel>Select Cigarette Brand/Variant (Quebec Budget & Mid-Tier):</label>
+      <label>Select Cigarette Brand/Variant (Quebec Budget &amp; Mid-Tier):</label>
       <input type="text" id="cigSearch" placeholder="Search brand or variant..." oninput="filterCigs()">
       <select id="cigSelect" size="5" onchange="onCigChange()"></select>
       <div id="selectedCigInfo">Average Quebec price: $12.75/pack</div>
@@ -206,7 +206,7 @@
       <p>Smokers' Helpline: 1-866-366-3667</p>
       <p>QuitNow (BC): 1-877-455-2233</p>
       <p>ConnexOntario: 1-866-531-2600</p>
-      <p>Free support available in English & French</p>
+      <p>Free support available in English &amp; French</p>
       <p><small>Visit <a href="https://www.canada.ca/en/health-canada/services/smoking-tobacco/quit-smoking.html" style="color: #ffffff;">Health Canada</a> for more resources</small></p>
     </div>
   </div>
@@ -257,7 +257,7 @@
       const prev = sel.value;
       sel.innerHTML = '<option value="avg">-- Average QC Price ($12.75/pack) --</option>';
       const f = filter.toLowerCase();
-      CIGARETTE_PRODUCTS.filter(p => 
+      CIGARETTE_PRODUCTS.filter(p =>
         p.brand.toLowerCase().includes(f) || p.variant.toLowerCase().includes(f)
       ).forEach(p => {
         const opt = document.createElement('option');
@@ -304,7 +304,7 @@
     if (usersSelect.value === 'new') document.getElementById('newUserBox').style.display = 'block';
 
     function verifyAge(isAdult) {
-      if (isAdult) {
+      if (!isAdult) {
         window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
         return;
       }
@@ -336,4 +336,46 @@
       if (localStorageAvailable) localStorage.setItem('currentUser', user);
       updateCounts();
       input.value = '';
-      document.getElementById('
+      document.getElementById('newUserBox').style.display = 'none';
+    }
+
+    function updateCounts() {
+      const count = user && counts[user] !== undefined ? counts[user] : 0;
+      document.getElementById('cigCount').textContent = count;
+      const cigsPerPack = 20;
+      const spent = (count / cigsPerPack) * activeCostPerPack;
+      document.getElementById('moneySpent').textContent = spent.toFixed(2);
+      document.getElementById('costBreakdown').innerHTML =
+        'Based on ' + (activeCostPerPack === AVG_COST_PER_PACK ? 'average Quebec price' : 'selected brand') +
+        ': $' + activeCostPerPack.toFixed(2) + '/pack (20 cigs/pack)';
+    }
+
+    function smokeCig() {
+      if (!user) {
+        document.getElementById('newUserBox').style.display = 'block';
+        return;
+      }
+      if (counts[user] === undefined) counts[user] = 0;
+      counts[user]++;
+      if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
+      updateCounts();
+
+      const btn = document.getElementById('cigButton');
+      const rect = btn.getBoundingClientRect();
+      const smoke = document.createElement('div');
+      smoke.className = 'smoke';
+      smoke.style.left = (rect.left + rect.width / 2) + 'px';
+      smoke.style.top = rect.top + 'px';
+      document.body.appendChild(smoke);
+      setTimeout(() => smoke.remove(), 2000);
+    }
+
+    function reset() {
+      if (!user) return;
+      counts[user] = 0;
+      if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
+      updateCounts();
+    }
+  </script>
+</body>
+</html>
