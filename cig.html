@@ -179,7 +179,6 @@
       Every cigarette reduces your life expectancy by approximately 11 minutes. Track your usage to help quit.
       In Canada, smoking is responsible for about 48,000 deaths each year.
     </div>
-
     <div>
       <select id="users" onchange="switchUser()"></select>
       <div id="newUserBox">
@@ -187,26 +186,21 @@
         <button onclick="addUser()">Add User</button>
       </div>
     </div>
-
     <div class="cig-selector">
       abel>Select Cigarette Brand/Variant (Quebec Budget & Mid-Tier):</label>
       <input type="text" id="cigSearch" placeholder="Search brand or variant..." oninput="filterCigs()">
       <select id="cigSelect" size="5" onchange="onCigChange()"></select>
       <div id="selectedCigInfo">Average Quebec price: $12.75/pack</div>
     </div>
-
     <div id="cigCount">0</div>
-
     <div class="health-impact">
       Money spent on cigarettes: $<span id="moneySpent">0.00</span>
       <div class="cost-breakdown" id="costBreakdown">
         Based on average Quebec price: $12.75/pack
       </div>
     </div>
-
     <button id="cigButton" onclick="smokeCig()">Log a Cigarette</button>
     <button onclick="reset()">Reset</button>
-
     <div class="quit-resources">
       <h3>Need Help Quitting?</h3>
       <p>Smokers' Helpline: 1-866-366-3667</p>
@@ -218,5 +212,128 @@
   </div>
 
   <script>
-    const CIGARETTE_PRODUCTS = 
+    const CIGARETTE_PRODUCTS = [
+      {"brand": "LD", "variant": "Standard", "price": 12.75},
+      {"brand": "LD", "variant": "Medium", "price": 12.75},
+      {"brand": "LD", "variant": "Bold", "price": 12.75},
+      {"brand": "Next", "variant": "Full Flavour", "price": 11.50},
+      {"brand": "DK's", "variant": "Original", "price": 11.25},
+      {"brand": "Rolled Gold", "variant": "Original", "price": 10.50},
+      {"brand": "Playfare's", "variant": "Full Flavour", "price": 11.00},
+      {"brand": "Canadian Classics", "variant": "Full Flavour", "price": 12.00},
+      {"brand": "Canadian Classics", "variant": "Light", "price": 12.00},
+      {"brand": "Export A", "variant": "Full Flavour", "price": 12.25},
+      {"brand": "Players", "variant": "Full Flavour", "price": 12.50},
+      {"brand": "Viceroy", "variant": "Full Flavour", "price": 11.75},
+      {"brand": "John Player Special", "variant": "Original", "price": 12.75},
+      {"brand": "Silver", "variant": "Full Flavour", "price": 12.50},
+      {"brand": "Benson & Hedges", "variant": "Gold", "price": 13.25},
+      {"brand": "du Maurier", "variant": "Full Flavour", "price": 14.50}
+    ];
 
+    const AVG_COST_PER_PACK = 12.75;
+    let counts = {};
+    let user = null;
+    let activeCostPerPack = AVG_COST_PER_PACK;
+    let localStorageAvailable = isLocalStorageAvailable();
+
+    if (localStorageAvailable) {
+      const stored = localStorage.getItem('cigCounts');
+      if (stored) counts = JSON.parse(stored);
+    }
+
+    function isLocalStorageAvailable() {
+      try {
+        localStorage.setItem('__t__', '1');
+        localStorage.removeItem('__t__');
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function populateCigs(filter = '') {
+      const sel = document.getElementById('cigSelect');
+      const prev = sel.value;
+      sel.innerHTML = '<option value="avg">-- Average QC Price ($12.75/pack) --</option>';
+      const f = filter.toLowerCase();
+      CIGARETTE_PRODUCTS.filter(p => 
+        p.brand.toLowerCase().includes(f) || p.variant.toLowerCase().includes(f)
+      ).forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.price;
+        opt.textContent = p.brand + ' - ' + p.variant + ' · $' + p.price + '/pack';
+        sel.appendChild(opt);
+      });
+      if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
+      onCigChange();
+    }
+
+    function filterCigs() {
+      populateCigs(document.getElementById('cigSearch').value);
+    }
+
+    function onCigChange() {
+      const sel = document.getElementById('cigSelect');
+      const info = document.getElementById('selectedCigInfo');
+      if (!sel.value || sel.value === 'avg') {
+        activeCostPerPack = AVG_COST_PER_PACK;
+        info.textContent = 'Using average QC price: $12.75/pack';
+      } else {
+        activeCostPerPack = parseFloat(sel.value);
+        info.textContent = 'Selected: ' + sel.options[sel.selectedIndex].textContent;
+      }
+      updateCounts();
+    }
+
+    const usersSelect = document.getElementById('users');
+    for (let u in counts) usersSelect.appendChild(new Option(u, u));
+    usersSelect.appendChild(new Option('Add User', 'new'));
+    user = localStorageAvailable ? localStorage.getItem('currentUser') : null;
+    if (user && counts[user] !== undefined) {
+      usersSelect.value = user;
+    } else if (Object.keys(counts).length > 0) {
+      user = Object.keys(counts)[0];
+      usersSelect.value = user;
+    } else {
+      user = null;
+      usersSelect.value = 'new';
+    }
+    populateCigs();
+    updateCounts();
+    if (usersSelect.value === 'new') document.getElementById('newUserBox').style.display = 'block';
+
+    function verifyAge(isAdult) {
+      if (!isAdult) {
+        window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
+        return;
+      }
+      document.getElementById('ageVerification').style.display = 'none';
+      document.getElementById('container').style.display = 'block';
+    }
+
+    function switchUser() {
+      const dropdown = document.getElementById('users');
+      if (dropdown.value === 'new') {
+        document.getElementById('newUserBox').style.display = 'block';
+      } else {
+        document.getElementById('newUserBox').style.display = 'none';
+        user = dropdown.value;
+        if (localStorageAvailable) localStorage.setItem('currentUser', user);
+        updateCounts();
+      }
+    }
+
+    function addUser() {
+      const input = document.getElementById('newUserName');
+      const name = input.value.trim();
+      if (!name) return;
+      counts[name] = 0;
+      if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
+      usersSelect.insertBefore(new Option(name, name), usersSelect.lastElementChild);
+      usersSelect.value = name;
+      user = name;
+      if (localStorageAvailable) localStorage.setItem('currentUser', user);
+      updateCounts();
+      input.value = '';
+      document.getElementById('
