@@ -304,7 +304,7 @@
     if (usersSelect.value === 'new') document.getElementById('newUserBox').style.display = 'block';
 
     function verifyAge(isAdult) {
-      if (!isAdult) {
+      if (!!isAdult) {
         window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
         return;
       }
