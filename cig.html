@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="MyamnarCIGGARETTEhasbullah.jpeg"/>
-  <title>Puff Counter - Track &amp; Quit Smoking</title>
+  <title>Puff Counter - Track & Quit Smoking</title>
   <style>
     body {
       margin: 0;
@@ -23,8 +23,6 @@
       padding: 40px;
       border-radius: 15px;
       backdrop-filter: blur(5px);
-      max-width: 700px;
-      width: 95%;
     }
     h1 {
       font-size: 28px;
@@ -36,7 +34,7 @@
       color: #ff4444;
       font-size: 14px;
       margin: 10px 0;
-      max-width: 100%;
+      max-width: 400px;
     }
     .health-impact {
       background: rgba(255, 0, 0, 0.1);
@@ -59,7 +57,6 @@
       border: 1px solid #ffffff;
       border-radius: 5px;
       font-size: 16px;
-      width: calc(100% - 46px);
     }
     button {
       padding: 10px 20px;
@@ -126,40 +123,6 @@
       background: rgba(255, 255, 255, 0.1);
       border-radius: 5px;
     }
-    .cig-selector {
-      margin: 10px 0;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-    }
-    .cig-selector label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-    #cigSearch {
-      width: calc(100% - 26px);
-      margin-bottom: 6px;
-      background: rgba(0,0,0,0.3);
-      color: #ffffff;
-      border: 1px solid #ffffff;
-    }
-    #cigSelect {
-      width: 100%;
-      max-height: 120px;
-    }
-    #selectedCigInfo {
-      font-size: 13px;
-      margin-top: 6px;
-      color: #ffcccc;
-    }
-    .cost-breakdown {
-      background: rgba(255, 0, 0, 0.1);
-      padding: 10px;
-      border-radius: 5px;
-      margin: 10px 0;
-      font-size: 14px;
-    }
   </style>
 </head>
 <body>
@@ -174,150 +137,80 @@
   </div>
 
   <div id="container" style="display: none;">
-    <h1>Cigarette Tracker - Quit Smoking</h1>
+    <h1>Puff Counter - Track & Quit</h1>
     <div class="warning-text">
       Every cigarette reduces your life expectancy by approximately 11 minutes. Track your usage to help quit.
       In Canada, smoking is responsible for about 48,000 deaths each year.
     </div>
-    <div>
-      <select id="users" onchange="switchUser()"></select>
-      <div id="newUserBox">
-        <input id="newUserName" placeholder="Enter Name" />
-        <button onclick="addUser()">Add User</button>
-      </div>
-    </div>
-    <div class="cig-selector">
-      <label>Select Cigarette Brand/Variant (Quebec Budget &amp; Mid-Tier):</label>
-      <input type="text" id="cigSearch" placeholder="Search brand or variant..." oninput="filterCigs()">
-      <select id="cigSelect" size="5" onchange="onCigChange()"></select>
-      <div id="selectedCigInfo">Average Quebec price: $12.75/pack</div>
+    <select id="users" onchange="switchUser()"></select>
+    <div id="newUserBox">
+      <input id="newUserName" placeholder="Enter Name" />
+      <button onclick="addUser()">Add</button>
     </div>
     <div id="cigCount">0</div>
     <div class="health-impact">
-      Money spent on cigarettes: $<span id="moneySpent">0.00</span>
-      <div class="cost-breakdown" id="costBreakdown">
-        Based on average Quebec price: $12.75/pack
-      </div>
+      Money spent on cigarettes: $<span id="moneySpent">0</span><br>
+      (Based on average cost of $15 per pack in Canada)
     </div>
     <button id="cigButton" onclick="smokeCig()">Log a Cigarette</button>
     <button onclick="reset()">Reset</button>
+    
     <div class="quit-resources">
       <h3>Need Help Quitting?</h3>
       <p>Smokers' Helpline: 1-866-366-3667</p>
       <p>QuitNow (BC): 1-877-455-2233</p>
       <p>ConnexOntario: 1-866-531-2600</p>
-      <p>Free support available in English &amp; French</p>
+      <p>Free support available in English & French</p>
       <p><small>Visit <a href="https://www.canada.ca/en/health-canada/services/smoking-tobacco/quit-smoking.html" style="color: #ffffff;">Health Canada</a> for more resources</small></p>
     </div>
   </div>
 
   <script>
-    const CIGARETTE_PRODUCTS = [
-      {"brand": "LD", "variant": "Standard", "price": 12.75},
-      {"brand": "LD", "variant": "Medium", "price": 12.75},
-      {"brand": "LD", "variant": "Bold", "price": 12.75},
-      {"brand": "Next", "variant": "Full Flavour", "price": 11.50},
-      {"brand": "DK's", "variant": "Original", "price": 11.25},
-      {"brand": "Rolled Gold", "variant": "Original", "price": 10.50},
-      {"brand": "Playfare's", "variant": "Full Flavour", "price": 11.00},
-      {"brand": "Canadian Classics", "variant": "Full Flavour", "price": 12.00},
-      {"brand": "Canadian Classics", "variant": "Light", "price": 12.00},
-      {"brand": "Export A", "variant": "Full Flavour", "price": 12.25},
-      {"brand": "Players", "variant": "Full Flavour", "price": 12.50},
-      {"brand": "Viceroy", "variant": "Full Flavour", "price": 11.75},
-      {"brand": "John Player Special", "variant": "Original", "price": 12.75},
-      {"brand": "Silver", "variant": "Full Flavour", "price": 12.50},
-      {"brand": "Benson & Hedges", "variant": "Gold", "price": 13.25},
-      {"brand": "du Maurier", "variant": "Full Flavour", "price": 14.50}
-    ];
-
-    const AVG_COST_PER_PACK = 12.75;
     let counts = {};
     let user = null;
-    let activeCostPerPack = AVG_COST_PER_PACK;
     let localStorageAvailable = isLocalStorageAvailable();
 
     if (localStorageAvailable) {
-      const stored = localStorage.getItem('cigCounts');
-      if (stored) counts = JSON.parse(stored);
-    }
-
-    function isLocalStorageAvailable() {
-      try {
-        localStorage.setItem('__t__', '1');
-        localStorage.removeItem('__t__');
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-
-    function populateCigs(filter = '') {
-      const sel = document.getElementById('cigSelect');
-      const prev = sel.value;
-      sel.innerHTML = '<option value="avg">-- Average QC Price ($12.75/pack) --</option>';
-      const f = filter.toLowerCase();
-      CIGARETTE_PRODUCTS.filter(p =>
-        p.brand.toLowerCase().includes(f) || p.variant.toLowerCase().includes(f)
-      ).forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p.price;
-        opt.textContent = p.brand + ' - ' + p.variant + ' · $' + p.price + '/pack';
-        sel.appendChild(opt);
-      });
-      if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
-      onCigChange();
-    }
-
-    function filterCigs() {
-      populateCigs(document.getElementById('cigSearch').value);
-    }
-
-    function onCigChange() {
-      const sel = document.getElementById('cigSelect');
-      const info = document.getElementById('selectedCigInfo');
-      if (!sel.value || sel.value === 'avg') {
-        activeCostPerPack = AVG_COST_PER_PACK;
-        info.textContent = 'Using average QC price: $12.75/pack';
-      } else {
-        activeCostPerPack = parseFloat(sel.value);
-        info.textContent = 'Selected: ' + sel.options[sel.selectedIndex].textContent;
-      }
-      updateCounts();
+      const storedCounts = localStorage.getItem('cigCounts');
+      if (storedCounts) counts = JSON.parse(storedCounts);
+    } else {
+      alert('Local storage is not available. Data will not be saved.');
     }
 
     const usersSelect = document.getElementById('users');
     for (let u in counts) usersSelect.appendChild(new Option(u, u));
     usersSelect.appendChild(new Option('Add User', 'new'));
+
     user = localStorageAvailable ? localStorage.getItem('currentUser') : null;
-    if (user && counts[user] !== undefined) {
-      usersSelect.value = user;
-    } else if (Object.keys(counts).length > 0) {
+    if (user && counts[user]) usersSelect.value = user;
+    else if (Object.keys(counts).length > 0) {
       user = Object.keys(counts)[0];
       usersSelect.value = user;
     } else {
       user = null;
       usersSelect.value = 'new';
     }
-    populateCigs();
     updateCounts();
+
     if (usersSelect.value === 'new') document.getElementById('newUserBox').style.display = 'block';
 
-    function verifyAge(isAdult) {
-      if (!isAdult) {
-        window.location.href = 'https://www.canada.ca/en/health-canada/services/substance-use/get-help/get-help-problematic-substance-use.html';
-        return;
+    function isLocalStorageAvailable() {
+      try {
+        localStorage.setItem('__test__', '__test__');
+        localStorage.removeItem('__test__');
+        return true;
+      } catch (e) {
+        return false;
       }
-      document.getElementById('ageVerification').style.display = 'none';
-      document.getElementById('container').style.display = 'block';
     }
 
     function switchUser() {
       const dropdown = document.getElementById('users');
+      const newUserBox = document.getElementById('newUserBox');
       if (dropdown.value === 'new') {
-        document.getElementById('newUserBox').style.display = 'block';
+        newUserBox.style.display = 'block';
       } else {
-        document.getElementById('newUserBox').style.display = 'none';
+        newUserBox.style.display = 'none';
         user = dropdown.value;
         if (localStorageAvailable) localStorage.setItem('currentUser', user);
         updateCounts();
@@ -325,56 +218,73 @@
     }
 
     function addUser() {
-      const input = document.getElementById('newUserName');
-      const name = input.value.trim();
+      const newUserName = document.getElementById('newUserName');
+      const name = newUserName.value.trim();
       if (!name) return;
+
       counts[name] = 0;
       if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
-      usersSelect.insertBefore(new Option(name, name), usersSelect.lastElementChild);
+      const option = new Option(name, name);
+      usersSelect.insertBefore(option, usersSelect.lastElementChild);
       usersSelect.value = name;
       user = name;
       if (localStorageAvailable) localStorage.setItem('currentUser', user);
       updateCounts();
-      input.value = '';
+      newUserName.value = '';
       document.getElementById('newUserBox').style.display = 'none';
     }
 
-    function updateCounts() {
-      const count = user && counts[user] !== undefined ? counts[user] : 0;
-      document.getElementById('cigCount').textContent = count;
-      const cigsPerPack = 20;
-      const spent = (count / cigsPerPack) * activeCostPerPack;
-      document.getElementById('moneySpent').textContent = spent.toFixed(2);
-      document.getElementById('costBreakdown').innerHTML =
-        'Based on ' + (activeCostPerPack === AVG_COST_PER_PACK ? 'average Quebec price' : 'selected brand') +
-        ': $' + activeCostPerPack.toFixed(2) + '/pack (20 cigs/pack)';
-    }
-
-    function smokeCig() {
-      if (!user) {
-        document.getElementById('newUserBox').style.display = 'block';
-        return;
-      }
-      if (counts[user] === undefined) counts[user] = 0;
-      counts[user]++;
-      if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
-      updateCounts();
-
-      const btn = document.getElementById('cigButton');
-      const rect = btn.getBoundingClientRect();
+    function createSmoke(x, y) {
       const smoke = document.createElement('div');
       smoke.className = 'smoke';
-      smoke.style.left = (rect.left + rect.width / 2) + 'px';
-      smoke.style.top = rect.top + 'px';
+      smoke.style.left = `${x}px`;
+      smoke.style.top = `${y}px`;
       document.body.appendChild(smoke);
       setTimeout(() => smoke.remove(), 2000);
     }
 
-    function reset() {
-      if (!user) return;
-      counts[user] = 0;
-      if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
+    function smokeCig() {
+      if (!user) {
+        alert('Please add a user first.');
+        return;
+      }
+      counts[user]++;
       updateCounts();
+      if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
+
+      const btn = document.getElementById('cigButton');
+      const rect = btn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2 - 7.5;
+      const centerY = rect.top + rect.height / 2 - 7.5;
+      for (let i = 0; i < 3; i++) {
+        const offsetX = centerX + (Math.random() - 0.5) * 20;
+        const offsetY = centerY + (Math.random() - 0.5) * 20;
+        createSmoke(offsetX, offsetY);
+      }
+    }
+
+    function reset() {
+      if (confirm('Reset cigarette count?') && user) {
+        counts[user] = 0;
+        updateCounts();
+        if (localStorageAvailable) localStorage.setItem('cigCounts', JSON.stringify(counts));
+      }
+    }
+
+    function verifyAge(isAdult) {
+      if (!isAdult) {
+        window.location.href = 'https://www.canada.ca/en/health-canada/services/smoking-tobacco/quit-smoking.html';
+        return;
+      }
+      document.getElementById('ageVerification').style.display = 'none';
+      document.getElementById('container').style.display = 'block';
+    }
+
+    function updateCounts() {
+      document.getElementById('cigCount').textContent = user ? counts[user] : 0;
+      const cigarettes = user ? counts[user] : 0;
+      const moneySpent = ((cigarettes / 25) * 15).toFixed(2);
+      document.getElementById('moneySpent').textContent = moneySpent;
     }
   </script>
 </body>
